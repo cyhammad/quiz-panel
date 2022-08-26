@@ -58,6 +58,9 @@ export default function AddQuiz() {
       await uploadBytes(appIconRef, selectedImage);
       path = await getDownloadURL(appIconRef);
     }
+    else {
+      path = "https://firebasestorage.googleapis.com/v0/b/quiz-demo-f1989.appspot.com/o/quiz_images%2Fdefault-quiz.jpg-1661544342128?alt=media&token=2c0bd8c2-9d53-4025-a0b5-d31fcc52f993";
+    }
     console.log(path);
     console.log("rases")
 
@@ -67,7 +70,7 @@ export default function AddQuiz() {
         questions: 0,
         paragraph: paragraph,
         ansText: answertext,
-        image: path ? path:"gs://quiz-demo-f1989.appspot.com/quiz_images/default-quiz.jpg",
+        image: path,
         category: category,
         author: author,
         comment: comment,
@@ -223,7 +226,6 @@ export default function AddQuiz() {
             </div>
             <div className="col-span-12 sm:col-span-7 pb-6 sm:pb-8 border-b border-b-primary-100">
               <InputFile
-                required
                 imageName={selectedImage?.name}
                 onChange={async (e) => {
                   setSelectedImage(e.target.files[0]);
