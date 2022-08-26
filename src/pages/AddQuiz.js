@@ -67,7 +67,7 @@ export default function AddQuiz() {
         questions: 0,
         paragraph: paragraph,
         ansText: answertext,
-        image: path,
+        image: path ? path:"gs://quiz-demo-f1989.appspot.com/quiz_images/default-quiz.jpg",
         category: category,
         author: author,
         comment: comment,
