@@ -10,10 +10,14 @@ import { db, storage } from "../firebase-config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import InputFile from "../components/UI/InputFile";
 import { useStateContext } from "../contexts/ContextProvider";
+import { useContext } from "react";
+import { GlobalContext } from "../contexts/FieldContext";
+import Question from "../components/Question";
 
 export default function AddQuiz() {
   const { quizCategories, updateCheck } = useStateContext();
   const navigate = useNavigate();
+  const { fields, addField } = useContext(GlobalContext);
   const [showModal, setShowModal] = useState(false);
   const [quizTitle, setQuizTitle] = useState("");
   const [questions, setQuestions] = useState([{question:"", answer:""}]);
@@ -25,6 +29,10 @@ export default function AddQuiz() {
   const [comment, setComment] = useState("");
   const [answer, setAnswer] = useState("True");
   const [questionCount, setQuestionCount] = useState(2);
+
+  const logData = () => {
+    console.log(fields);
+  };
 
   let addQuestionField = ()=>{
     let question = document.getElementById("question1");
@@ -67,7 +75,7 @@ export default function AddQuiz() {
     try {
       const res=await addDoc(collection(db, "quizes"), {
         name: quizTitle,
-        questions: 0,
+        questions: fields,
         paragraph: paragraph,
         ansText: answertext,
         image: path,
@@ -89,7 +97,6 @@ export default function AddQuiz() {
   return (
     <div className="w-full min-h-screen sm:max-w-screen-2xl px-6 sm:px-8 xl:px-6 xl:py-8 sm:mx-auto">
       <section>
-        
         <div className="my-8 sm:flex items-center justify-between w-full">
           <div className="flex items-center">
             <svg
@@ -134,7 +141,7 @@ export default function AddQuiz() {
               Questions:
             </div>
             <div className="col-span-2 pl-4">
-                <div onClick={()=>addQuestionField()} className="w-full flex items-center justify-center lg:justify-between px-3 bg-purple-600 h-11 rounded-md cursor-pointer">
+                <div onClick={addField} className="w-full flex items-center justify-center lg:justify-between px-3 bg-purple-600 h-11 rounded-md cursor-pointer">
                   <p className="text-sm hidden lg:inline" >Add Question</p>
                   <svg
                     className="w-4 h-4 text-white"
@@ -147,44 +154,9 @@ export default function AddQuiz() {
                   </svg>
                 </div>
               </div>
-            <div className="col-span-12 grid grid-cols-12 gap-y-3 sm:gap-y-8" id="question1">
-              <div className="col-span-12 sm:col-span-5">
-                <label className="">Question 1</label>
-                <p className="mt-2 text-xs text-white text-opacity-50">
-                  Enter a question
-                </p>
-              </div>
-              <div className="col-span-12 sm:col-span-7">
-                <Input
-                  required
-                  placeholder={"Type something ..."}
-                  onChange={(e) => {
-                    setQuestions(updatedQuestions(e.target.value, 0));
-                  }}
-                />
-              </div>
-              <div className="col-span-12 sm:col-span-5 sm:pb-8 sm:border-b sm:border-b-primary-100">
-                <label className=""></label>
-              </div>
-              <div className="col-span-12 sm:col-span-7 pb-6 sm:pb-8 border-b border-b-primary-100">
-                <Select
-                  alt
-                  required
-                  onChange={(e) => {
-                    setQuestions(updatedAnswers(e.target.value, 0));
-                  }}
-                >
-                  <option value="True">
-                    <span style={{ color: "red"}}>&#10004; </span>
-                    True
-                  </option>
-                  <option value="False">
-                  <span style={{ color: "green"}}>&#10005; </span>
-                    False
-                  </option>
-                </Select>
-              </div>
-            </div>
+              {fields.map((field) => {
+                return <Question key={field.id} fieldId={field.id} />;
+              })}
             <div className="col-span-12 sm:col-span-5 sm:pb-8 sm:border-b sm:border-b-primary-100" id="paragraph">
               <label className="">Paragraph</label>
               <p className="mt-2 text-xs text-white text-opacity-50">
