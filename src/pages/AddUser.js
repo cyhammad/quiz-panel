@@ -172,7 +172,7 @@ export default function AddUser() {
         </div>
       </BackdropModal>
       <BackdropModal
-        title="User Already Exists"
+        title="Error: User Already Exists"
         show={errorModal} 
         onClick={() => setErrorModal(false)}
       >
