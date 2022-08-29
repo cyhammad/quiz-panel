@@ -14,6 +14,7 @@ export default function AddUser() {
   const { updateCheck } = useStateContext();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [author, setAuthor] = useState("");
   const [email, setEmail] = useState("");
@@ -31,7 +32,7 @@ export default function AddUser() {
           updateCheck();
           setShowModal(true);
       }).catch(() => {
-        console.log("userrr Alreadddy thereee")
+        setErrorModal(true);
       });
       
     } catch (error) {
@@ -163,6 +164,29 @@ export default function AddUser() {
               onClick={() => {
                 setShowModal(false);
                 navigate("/users");
+              }}
+            >
+              Yes
+            </Button>
+          </div>
+        </div>
+      </BackdropModal>
+      <BackdropModal
+        title="User Already Exists"
+        show={errorModal} 
+        onClick={() => setErrorModal(false)}
+      >
+        <p className="mb-6 text-center text-white text-opacity-50">
+          The user is already registered in the database.
+        </p>
+        <div className="flex justify-center">
+          <div className="w-2/3">
+            <Button
+              secondaryAlt
+              fullWidth
+              type={"button"}
+              onClick={() => {
+                setErrorModal(false);
               }}
             >
               Yes
