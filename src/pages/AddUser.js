@@ -172,12 +172,12 @@ export default function AddUser() {
         </div>
       </BackdropModal>
       <BackdropModal
-        title="Error: User Already Exists"
+        title="Error"
         show={errorModal} 
         onClick={() => setErrorModal(false)}
       >
         <p className="mb-6 text-center text-white text-opacity-50">
-          The user is already registered in the database.
+          User already exists.
         </p>
         <div className="flex justify-center">
           <div className="w-2/3">
